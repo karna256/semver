@@ -15,7 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Resolve Environment
-        if: github.event.pull_request.merged
         run: |
           branch_ref=${{ github.base_ref }}
             if [ $branch_ref == 'main' ]; then
@@ -26,7 +25,7 @@ jobs:
                 echo "env_name=staging" >> $GITHUB_ENV
             fi
     outputs:
-      env_name: $ {{ env.env_name }}
+      env_name: ${{ env.env_name }}
   Semver:
     needs: Resolve-Environment
     environment: ${{ needs.Resolve-Environment.outputs.env_name }}
@@ -34,6 +33,9 @@ jobs:
     env:
       package_name: ${{ needs.Resolve-Environment.outputs.env_name }}
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Setup semver bash
         if: github.event.pull_request.merged
         run: |

@@ -69,7 +69,7 @@ jobs:
       - name: Push Tag
         if: github.event.pull_request.merged
         id: tag_version
-        uses: mathieudutour/github-tag-action@v5.6
+        uses: mathieudutour/github-tag-action@v6.2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           custom_tag: ${{ env.tag_version }}
@@ -82,3 +82,4 @@ jobs:
           prerelease: false
           title: ${{ env.tag_version }}
           automatic_release_tag: ${{ env.tag_version }}
+          files: false

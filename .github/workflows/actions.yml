@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Resolve Environment
+        if: github.event.pull_request.merged
         run: |
           branch_ref=${{ github.base_ref }}
             if [ $branch_ref == 'main' ]; then
@@ -34,11 +35,13 @@ jobs:
       package_name: ${{ needs.Resolve-Environment.outputs.env_name }}
     steps:
       - name: Setup semver bash
+        if: github.event.pull_request.merged
         run: |
           sudo curl https://raw.githubusercontent.com/fsaintjacques/semver-tool/3.0.0/src/semver -o /usr/local/bin/semver && sudo chmod +x /usr/local/bin/semver
           semver --version
       - name: Get version
         id: get-version
+        if: github.event.pull_request.merged
         run: |
           git fetch --tags
           last_version=$(git tag --sort=-version:refname | grep -P "^$package_name@v\d+.\d+.\d+$" | head -n 1 | cut -d v -f 2)

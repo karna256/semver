@@ -82,4 +82,4 @@ jobs:
           prerelease: false
           title: ${{ env.tag_version }}
           automatic_release_tag: ${{ env.tag_version }}
-          files: false
+          files: ""

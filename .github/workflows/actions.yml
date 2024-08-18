@@ -52,6 +52,14 @@ jobs:
             new_version=$(semver bump patch "$last_version")
           fi
           echo "new_version=$new_version" >> $GITHUB_OUTPUT
+      - name: Prepare tag
+        id: prepare
+        if: github.event.pull_request.merged
+        run: |
+          VERSION=${SCOPE}@v${RELEASE_VERSION}
+        env:
+          SCOPE: ${{ env.package_name }}
+          RELEASE_VERSION: ${{ steps.get-version.outputs.new_version }}
       - name: Push Tag
         if: github.event.pull_request.merged
         id: tag_version

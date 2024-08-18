@@ -49,9 +49,9 @@ jobs:
           last_version=$(git tag --sort=-version:refname | grep -P "^$package_name@v\d+.\d+.\d+$" | head -n 1 | cut -d v -f 2)
           if [ -z "$last_version" ]; then
             new_version=1.0.0
-          elif [[ ${{ github.event.pull_request.title }} =~ ^"major" ]]; then
+          elif [[ "${{ github.event.pull_request.title }}" =~ ^"major" ]]; then
             new_version=$(semver bump major "$last_version")
-          elif [[ ${{ github.event.pull_request.title }} =~ ^"feat" ]]; then
+          elif [[ "${{ github.event.pull_request.title }}" =~ ^"feat" ]]; then
             new_version=$(semver bump minor "$last_version")
           else
             new_version=$(semver bump patch "$last_version")
@@ -82,4 +82,4 @@ jobs:
           prerelease: false
           title: ${{ env.tag_version }}
           automatic_release_tag: ${{ env.tag_version }}
-          files: ""
+          
